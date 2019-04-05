@@ -1,0 +1,19 @@
+<table class="table table-striped table-dark">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">URL</th>
+      <th scope="col">Tags</th>
+      <th scope="col">Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let u of urlsService.urls">
+      <th scope="row">{{u.id}}</th>
+      <td>{{u.url}}</td>
+      <td>{{getTagsStr(u.tags)}}</td>
+      <td>Editar | Excluir </td>
+    </tr>
+    
+  </tbody>
+</table>

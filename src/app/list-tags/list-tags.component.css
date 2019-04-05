@@ -1,0 +1,14 @@
+ul, li{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+li:first-child{
+    border-top: 1px solid #ccc;
+}
+li{
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    background: rgb(211, 211, 211)
+}

@@ -1,0 +1,13 @@
+<form class="form-inline" (submit)="addUrl($event)" action="#">
+  <label class="sr-only" for="txturl">URL</label>
+  <input type="text" class="form-control mb-2 mr-sm-2" name="url" id="txturl" placeholder="URL" [(ngModel)]="url">
+
+  <label class="sr-only" for="txttags">tags</label>
+  <div class="input-group mb-2 mr-sm-2 flex-grow-1">
+    <div class="input-group-prepend">
+      <div class="input-group-text">#</div>
+    </div>
+    <input type="text" class="form-control" id="txttags" name="tags" placeholder="tags separadas por vírgula" [(ngModel)]="tags">
+  </div>
+  <button type="submit" class="btn btn-primary mb-2">Cadastrar</button>
+</form>
