@@ -1,5 +1,5 @@
-import { UrlsService } from './../urls.service';
-import { TagsService, ITags } from './../tags.service';
+import { UrlsService } from '../../services/urls.service/urls.service';
+import { TagsService, ITags } from '../../services/tags.service/tags.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({

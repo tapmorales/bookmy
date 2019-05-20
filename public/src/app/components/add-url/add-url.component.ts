@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { UrlsService } from '../urls.service';
+import { UrlsService } from '../../services/urls.service/urls.service'
 
 @Component({
   selector: 'add-url',

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TagsService } from './tags.service';
+import { TagsService } from '../tags.service/tags.service';
 
 export interface IUrl{
   id: number,
