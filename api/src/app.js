@@ -16,7 +16,7 @@ const tagsRoute = require('./routes/tags.routes')
 
 app.use('/', route)
 
-app.use('/urls', urlsRoute)
-app.use('/tags', tagsRoute)
+app.use('/api/urls', urlsRoute)
+app.use('/api/tags', tagsRoute)
 
 module.exports = app
