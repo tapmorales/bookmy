@@ -15,8 +15,10 @@ exports.delete = (req, res, next)=>{
 }
 
 exports.put = (req, res, next)=>{
+    let _id = req.params.id
     res.status(200).send({
-        "json": "lista de urls do usuario"
+        _id, 
+        "item": req.body        
     })
 }
 
