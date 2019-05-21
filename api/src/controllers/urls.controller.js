@@ -5,9 +5,7 @@ exports.get = (req, res, next)=>{
 }
 
 exports.post = (req, res, next)=>{
-    res.status(200).send({
-        "json": "lista de urls do usuario"
-    })
+    res.status(201).send(req.body)
 }
 
 exports.delete = (req, res, next)=>{

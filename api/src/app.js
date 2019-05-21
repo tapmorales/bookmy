@@ -1,7 +1,11 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
 
 const router = express.Router()
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false}))
 
 const route = router.get('/', (req, res, next) => {
   res.status(200).send({
