@@ -1,10 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
-router.get('/', (req, res, next)=>{
-    res.status(200).send({
-        "json": "lista de urls do usuario"
-    })
-})
+const controller = require('../controllers/urls.controller')
+
+router.get('/', controller.get)
 
 module.exports = router
