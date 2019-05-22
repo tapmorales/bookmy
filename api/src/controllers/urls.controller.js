@@ -4,16 +4,19 @@ const ValidatorHttp = require('../helper/validateDataHttp')
 //const Url = require('../models/urls.model')
 
 exports.get = async (req, res, next)=>{
-    // res.status(200).send({
-    //     "json": "lista de urls do usuario"
-    // })
+     
     try{
-        let data = await Url.find({}, 'url tags title description private')
+        let data = null
+        if(req.body._id){
+            data = await Url.findById(req.body._id, 'url tags title description private')
+        }else {
+            data = await Url.find({}, 'url tags title description private')
+        }
+
         res.status(200).send(data)
     } catch(e){
         res.status(500).send({message: 'erro 500', erro: e})
-    }
-    
+    }    
 }
 
 exports.post = async (req, res, next)=>{
@@ -21,22 +24,19 @@ exports.post = async (req, res, next)=>{
     let validate = new ValidatorHttp()
     validate.isRequired(req.body.url, 'URL is required')
     validate.isUnique(await Url.findOne({url: req.body.url}), 'A URL precisa ser única')
+    validate.isArray(req.body.tags, 'As tags precisam ser array')
 
     if(!validate.isValid()){
         res.status(400).send(validate.errors).end()
         return
     }
 
-
     const url = new Url()
     url.url = req.body.url
-    url.tags = req.body.tags
+    url.tags = req.body.tags || ["untaggled"]
     url.title = req.body.title
     url.description = req.body.description
-    url.private = req.body.private || false
-
-    
-    
+    url.private = req.body.private || false    
 
     try{
         let data = await url.save()
@@ -68,7 +68,7 @@ exports.put = async (req, res, next)=>{
         tags: req.body.tags,
         title: req.body.title,
         description: req.body.description,
-        private: req.body.private || false
+        private: req.body.private
     }
     try{
         let data = await Url.findByIdAndUpdate(_id, {
@@ -79,18 +79,11 @@ exports.put = async (req, res, next)=>{
     } catch(e){
         res.status(500).send({'Erro': e})
     }
-    // res.status(200).send({
-    //     _id, 
-    //     "item": req.body        
-    // })
 }
 
 exports.getByTag = async (req, res, next)=>{
 
     const _tags = (req.params.tags).split(',')
-    // res.status(200).send({
-    //     "json": "lista de urls do usuario"
-    // })
     try{
         let data = await Url.find({ 
             tags: {
