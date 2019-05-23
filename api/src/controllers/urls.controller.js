@@ -1,18 +1,14 @@
+const ValidatorHttp = require('../helper/validateDataHttp')
+const repository = require('../repository/urls.repository')
 const mongoose = require('mongoose')
 const Url = mongoose.model('Url')
-const ValidatorHttp = require('../helper/validateDataHttp')
-//const Url = require('../models/urls.model')
 
 exports.get = async (req, res, next)=>{
+
+    const _id = req.body && req.body._id ? req.body._id : null
      
     try{
-        let data = null
-        if(req.body._id){
-            data = await Url.findById(req.body._id, 'url tags title description private')
-        }else {
-            data = await Url.find({}, 'url tags title description private')
-        }
-
+        let data = await repository.get(_id)
         res.status(200).send(data)
     } catch(e){
         res.status(500).send({message: 'erro 500', erro: e})
@@ -25,13 +21,14 @@ exports.post = async (req, res, next)=>{
     validate.isRequired(req.body.url, 'URL is required')
     validate.isUnique(await Url.findOne({url: req.body.url}), 'A URL precisa ser única')
     validate.isArray(req.body.tags, 'As tags precisam ser array')
+    
 
     if(!validate.isValid()){
         res.status(400).send(validate.errors).end()
         return
     }
 
-    const url = new Url()
+    const url = {}
     url.url = req.body.url
     url.tags = req.body.tags || ["untaggled"]
     url.title = req.body.title
@@ -39,7 +36,7 @@ exports.post = async (req, res, next)=>{
     url.private = req.body.private || false    
 
     try{
-        let data = await url.save()
+        let data = await repository.post(url)
         res.status(201).send(data)
     } catch(e){
         res.status(400).send({'Erro': e})
@@ -49,7 +46,7 @@ exports.post = async (req, res, next)=>{
 exports.delete = async (req, res, next)=>{
     let _id = req.params.id
     try{
-        await Url.findByIdAndRemove(_id)
+        await repository.delete(_id)
         res.status(200).send({
             url: req.body.url,
             tags: req.body.tags,
@@ -71,9 +68,7 @@ exports.put = async (req, res, next)=>{
         private: req.body.private
     }
     try{
-        let data = await Url.findByIdAndUpdate(_id, {
-            $set: newUrl
-        })
+        let data = await repository.put(_id, newUrl)
         //data são os dados antigos
         res.status(200).send(newUrl)
     } catch(e){
@@ -85,11 +80,7 @@ exports.getByTag = async (req, res, next)=>{
 
     const _tags = (req.params.tags).split(',')
     try{
-        let data = await Url.find({ 
-            tags: {
-                $all:  _tags
-            } 
-        })
+        let data = await repository.getByTag(_tags)
         res.status(200).send(data)
     } catch(e){
         res.status(500).send({'Erro': e})
