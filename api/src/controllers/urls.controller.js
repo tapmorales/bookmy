@@ -19,7 +19,7 @@ exports.post = async (req, res, next)=>{
 
     let validate = new ValidatorHttp()
     validate.isRequired(req.body.url, 'URL is required')
-    validate.isUnique(await Url.findOne({url: req.body.url}), 'A URL precisa ser única')
+    //validate.isUnique(await Url.findOne({url: req.body.url}), 'A URL precisa ser única')
     validate.isArray(req.body.tags, 'As tags precisam ser array')
     
 

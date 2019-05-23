@@ -14,8 +14,11 @@ exports.get = async (_id)=>{
 }
 
 exports.post = async data=>{
-    const url = new Url(data)
-    return await url.save()
+    //const url = new Url(data)
+    //return await url.save()
+    return await Url.init().then(()=> {
+        return Url.create(data)
+    })
 }
 
 exports.delete = async _id =>{    

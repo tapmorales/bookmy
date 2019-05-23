@@ -17,7 +17,6 @@ module.exports =  class ValidatorHttp{
     }
 
     isArray(value, message){
-        console.log('value2  ', value)
         if(typeof value.isArray === 'function' && value.isArray()){
             this._errors.push({message})
         }
