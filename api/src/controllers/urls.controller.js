@@ -1,9 +1,9 @@
 const ValidatorHttp = require('../helper/validateDataHttp')
 const repository = require('../repository/urls.repository')
 const mongoose = require('mongoose')
-const Url = mongoose.model('Url')
+//const Url = mongoose.model('Url')
 
-exports.get = async (req, res, next)=>{
+exports.get = async (req, res)=>{
 
     const _id = req.body && req.body._id ? req.body._id : null
      
@@ -15,7 +15,7 @@ exports.get = async (req, res, next)=>{
     }    
 }
 
-exports.post = async (req, res, next)=>{
+exports.post = async (req, res)=>{
 
     let validate = new ValidatorHttp()
     validate.isRequired(req.body.url, 'URL is required')
@@ -43,7 +43,7 @@ exports.post = async (req, res, next)=>{
     }
 }
 
-exports.delete = async (req, res, next)=>{
+exports.delete = async (req, res)=>{
     let _id = req.params.id
     try{
         await repository.delete(_id)
@@ -58,14 +58,14 @@ exports.delete = async (req, res, next)=>{
     }
 }
 
-exports.put = async (req, res, next)=>{
+exports.put = async (req, res)=>{
     let _id = req.params.id
     let newUrl = {
         url: req.body.url,
         tags: req.body.tags,
         title: req.body.title,
         description: req.body.description,
-        private: req.body.private
+        private: req.body.private || false
     }
     try{
         let data = await repository.put(_id, newUrl)
@@ -76,7 +76,7 @@ exports.put = async (req, res, next)=>{
     }
 }
 
-exports.getByTag = async (req, res, next)=>{
+exports.getByTag = async (req, res)=>{
 
     const _tags = (req.params.tags).split(',')
     try{

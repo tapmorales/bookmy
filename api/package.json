@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./bin/server"
+    "test": "mocha --timeout 10000 tests/*.test.js --exit",
+    "start": "SET NODE_ENV=dev && nodemon ./bin/server"
   },
   "keywords": [],
   "author": "Daniel Tapias Morales <tapmorales@gmail.com> (tapmorales.com)",
@@ -17,6 +17,10 @@
     "mongoose": "^5.5.10"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "eslint": "^5.16.0",
+    "mocha": "^6.1.4",
     "nodemon": "^1.19.0"
   }
 }

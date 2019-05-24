@@ -1,3 +1,4 @@
+const http = require('http')
 const app = require('./../src/app')
 const debug = require('debug')('api:server')
 
@@ -5,9 +6,11 @@ var port = normalizePort(process.env.PORT || '3000');
 
 app.set('port', port)
 
-app.listen(port)
-app.on('error', onError)
-app.on('listening', onListening);
+const server = http.createServer(app)
+
+server.listen(port)
+server.on('error', onError)
+server.on('listening', onListening);
 
 
 function normalizePort(val) {
@@ -55,3 +58,4 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+console.log('server on 3000')
