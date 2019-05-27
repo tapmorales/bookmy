@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --timeout 10000 tests/*.test.js --exit",
+    "test:covarage": "nyc npm run test",
     "start": "SET NODE_ENV=dev && nodemon ./bin/server"
   },
   "keywords": [],
@@ -20,7 +21,14 @@
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "eslint": "^5.16.0",
+    "husky": "^2.3.0",
     "mocha": "^6.1.4",
-    "nodemon": "^1.19.0"
+    "nodemon": "^1.19.0",
+    "nyc": "^14.1.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "./node_modules/.bin/eslint --ext .js src/**"
+    }
   }
 }

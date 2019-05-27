@@ -17,11 +17,11 @@ console.log('---------', process.env.NODE_ENV, process.env.NODE_ENV.trim() === '
 
 switch(process.env.NODE_ENV.trim()){
     case 'dev':
-        mongoose.connect(config.connectionStringDb, { useNewUrlParser: true, useFindAndModify: true })
+        mongoose.connect(config.connectionStringDb, { useNewUrlParser: true, useFindAndModify: false })
         //mongoose.set('useCreateIndex', true); //para poder usar unique no model
         break
     case 'test':
-        mongoose.connect(config.connectionStringDbTest, { useNewUrlParser: true, useFindAndModify: true })
+        mongoose.connect(config.connectionStringDbTest, { useNewUrlParser: true, useFindAndModify: false })
         //mongoose.set('useCreateIndex', true); //para poder usar unique no model
         break
     // default:

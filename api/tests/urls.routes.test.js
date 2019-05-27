@@ -27,10 +27,10 @@ describe('API - URLS Routes', function () {
     }
     
     beforeEach( done => {
-        Urls.remove({}, err => done() )
+        Urls.deleteMany({}, err => done() )
     })
     it('shoud return status 200', function(done) {
-        this.timeout(100000)
+        this.timeout(500000)
         chai.request(app)
             .get(urlapi)
             .end( function(err, res) {
