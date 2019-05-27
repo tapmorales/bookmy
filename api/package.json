@@ -28,7 +28,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "./node_modules/.bin/eslint --ext .js src/**"
+      "pre-commit": "npx eslint --ext .js src/**"
     }
   }
 }

@@ -13,7 +13,7 @@ const Tags = require('./models/tags.model')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 
-console.log('---------', process.env.NODE_ENV, process.env.NODE_ENV.trim() === 'dev')
+//console.log('---------', process.env.NODE_ENV, process.env.NODE_ENV.trim() === 'dev')
 
 switch(process.env.NODE_ENV.trim()){
     case 'dev':
