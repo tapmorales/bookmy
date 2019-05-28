@@ -1,6 +1,6 @@
 const ValidatorHttp = require('../helper/validateDataHttp')
 const repository = require('../repository/urls.repository')
-const mongoose = require('mongoose')
+//const mongoose = require('mongoose')
 //const Url = mongoose.model('Url')
 
 exports.get = async (req, res)=>{
@@ -33,7 +33,9 @@ exports.post = async (req, res)=>{
     url.tags = req.body.tags || ["untaggled"]
     url.title = req.body.title
     url.description = req.body.description
-    url.private = req.body.private || false    
+    url.private = req.body.private || false
+
+    const tag = req.body.tags || ["untaggled"]
 
     try{
         let data = await repository.post(url)
@@ -68,7 +70,7 @@ exports.put = async (req, res)=>{
         private: req.body.private || false
     }
     try{
-        let data = await repository.put(_id, newUrl)
+        await repository.put(_id, newUrl)
         //data são os dados antigos
         res.status(200).send(newUrl)
     } catch(e){
@@ -78,7 +80,7 @@ exports.put = async (req, res)=>{
 
 exports.getByTag = async (req, res)=>{
 
-    const _tags = (req.params.tags).split(',')
+    const _tags = req.params.tags
     try{
         let data = await repository.getByTag(_tags)
         res.status(200).send(data)
