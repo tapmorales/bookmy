@@ -1,5 +1,6 @@
 const ValidatorHttp = require('../helper/validateDataHttp')
 const repository = require('../repository/urls.repository')
+const tagsRepository = require('../repository/tags.repository')
 //const mongoose = require('mongoose')
 //const Url = mongoose.model('Url')
 
@@ -35,11 +36,18 @@ exports.post = async (req, res)=>{
     url.description = req.body.description
     url.private = req.body.private || false
 
-    const tag = req.body.tags || ["untaggled"]
+    
 
     try{
-        let data = await repository.post(url)
-        res.status(201).send(data)
+        let dataUrl = await repository.post(url)
+        let urlId = dataUrl.id;
+        const tags = []
+        url.tags.forEach(tag => {
+            tags.push({tag, urls: [urlId]})
+        });
+        let dataTag = await tagsRepository.insertOrUpdate(tags)
+      
+        res.status(201).send({...dataUrl._doc, urlsByTag: dataTag})
     } catch(e){
         res.status(400).send({'Erro': e})
     }
@@ -49,6 +57,9 @@ exports.delete = async (req, res)=>{
     let _id = req.params.id
     try{
         await repository.delete(_id)
+
+        await tagsRepository.deleteUrlId(_id)
+
         res.status(200).send({
             url: req.body.url,
             tags: req.body.tags,

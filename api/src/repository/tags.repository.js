@@ -31,6 +31,36 @@ exports.delete = async _id => {
 
 exports.getByTags = async tags => {
     let _tags = (tags).split(',')
-    console.log(_tags)
     return await Tag.find({tag: _tags})
+}
+
+exports.insertOrUpdate = async tags => {
+    const retorno = []
+    const getUpdate = async tag => {
+        return await Tag.findOneAndUpdate(
+            {tag: tag.tag}, 
+            {
+                tag: tag.tag,
+                $push: {
+                    urls: tag.urls
+                }
+            }, 
+            {upsert: true, new: true}) 
+    }
+
+    for(let i = 0; i < tags.length; i++){
+        let tag = tags[i]
+        let _tag = await getUpdate(tag)   
+        retorno.push(_tag)
+    }    
+
+    return retorno    
+}
+
+exports.deleteUrlId = async _id => {
+    await Tag.update({}, {
+            $pull: { urls: {$in: [_id]} } 
+        },
+        { multi: true }
+    )
 }
