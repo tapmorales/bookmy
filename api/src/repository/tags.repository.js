@@ -43,6 +43,9 @@ exports.insertOrUpdate = async tags => {
                 tag: tag.tag,
                 $push: {
                     urls: tag.urls
+                },
+                $inc: {
+                    qtd: 1
                 }
             }, 
             {upsert: true, new: true}) 
@@ -57,10 +60,16 @@ exports.insertOrUpdate = async tags => {
     return retorno    
 }
 
-exports.deleteUrlId = async _id => {
-    await Tag.update({}, {
-            $pull: { urls: {$in: [_id]} } 
+exports.deleteUrlId = async _urlId => {
+
+    await Tag.update({urls: {$all: [_urlId]} }, {
+            $pull: { urls: {$in: [_urlId]} },
+            $inc: {qtd: -1}
         },
         { multi: true }
     )
+
+
+    await Tag.deleteMany({urls: []})
+    
 }

@@ -5,7 +5,12 @@ const schema = new Schema({
     tag: {
         type: String,
         required: true,
-        trim: true,
+        trim: true
+    },
+    qtd: {
+        type: Number,
+        required: true,
+        default: 0
     },
     urls: [{
         type: String,

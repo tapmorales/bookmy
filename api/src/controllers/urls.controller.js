@@ -16,6 +16,16 @@ exports.get = async (req, res)=>{
     }    
 }
 
+const updateTags = async (urlId, _tags) => {
+    const tags = []
+    _tags.forEach(tag => {
+        tags.push({tag, urls: [urlId]})
+    });
+    console.log('tags')
+    console.log(tags)
+    return await tagsRepository.insertOrUpdate(tags)
+}
+
 exports.post = async (req, res)=>{
 
     let validate = new ValidatorHttp()
@@ -41,11 +51,7 @@ exports.post = async (req, res)=>{
     try{
         let dataUrl = await repository.post(url)
         let urlId = dataUrl.id;
-        const tags = []
-        url.tags.forEach(tag => {
-            tags.push({tag, urls: [urlId]})
-        });
-        let dataTag = await tagsRepository.insertOrUpdate(tags)
+        let dataTag = await updateTags(urlId, url.tags)
       
         res.status(201).send({...dataUrl._doc, urlsByTag: dataTag})
     } catch(e){
@@ -82,7 +88,12 @@ exports.put = async (req, res)=>{
     }
     try{
         await repository.put(_id, newUrl)
-        //data são os dados antigos
+        
+        //deletar e depois atualizar
+        await tagsRepository.deleteUrlId(_id)
+        await updateTags(_id, newUrl.tags)
+        //newUrl.urlsByTag = dataTag
+        
         res.status(200).send(newUrl)
     } catch(e){
         res.status(500).send({'Erro': e})

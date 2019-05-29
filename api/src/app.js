@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 switch(process.env.NODE_ENV.trim()){
     case 'dev':
-        mongoose.connect(config.connectionStringDbTest, { useNewUrlParser: true, useFindAndModify: false })
+        mongoose.connect(config.connectionStringDb, { useNewUrlParser: true, useFindAndModify: false })
         //mongoose.set('useCreateIndex', true); //para poder usar unique no model
         break
     case 'test':
