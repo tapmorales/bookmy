@@ -53,7 +53,6 @@ describe('API - Tags Routes', function(){
             .end(function(err, res){
                 if(err) done(err)
                 expect(res).to.have.status(201)
-                console.log(res.body)
                 expect(res.body).to.be.an('object')
                 expect(res.body).to.have.property('tag').to.be.a('string')
                 done()
@@ -80,7 +79,7 @@ describe('API - Tags Routes', function(){
         } )
     } )
 
-    
+
 
     it('should delete a tag', function(done){
         let tag = new Tags(tagObject)
