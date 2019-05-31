@@ -10,6 +10,13 @@ module.exports =  class ValidatorHttp{
         }
     }
 
+    isUrl(value, message){
+        const regex = /^http(s)?:\/\//
+        if(!regex.test(value)){
+            this._errors.push({message})
+        }
+    }
+
     isUnique(value, message){
         if (value !== null && JSON.stringify(value) !== '{}' && JSON.stringify(value) !== '[]'){
             this._errors.push({message})

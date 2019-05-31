@@ -3,15 +3,17 @@ const app = express()
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const config = require('../config')
+const cors = require('cors')
 
 const router = express.Router()
 
 //carrega os models
 const Urls = require('./models/urls.model')
 const Tags = require('./models/tags.model')
-
+app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
+
 
 //console.log('---------', process.env.NODE_ENV, process.env.NODE_ENV.trim() === 'dev')
 
