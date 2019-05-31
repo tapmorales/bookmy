@@ -1,4 +1,4 @@
-import { UrlsService } from '../../services/urls.service/urls.service';
+//import { UrlsService } from '../../services/urls.service/urls.service';
 import { TagsService, ITags } from '../../services/tags.service/tags.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -10,10 +10,10 @@ import { Component, OnInit } from '@angular/core';
 export class ListTagsComponent implements OnInit {
 
   tags: Array<ITags>
-  tagFiltred = null
+  //tagFiltred = null
 
-  constructor(public tagsService: TagsService, public urlsService: UrlsService) { 
-    this.tags = tagsService.tags;
+  constructor(public tagsService: TagsService) { 
+    //this.tags = tagsService.tags;
     
   }  
 
@@ -21,11 +21,11 @@ export class ListTagsComponent implements OnInit {
   }
 
   filterTag(){
-    this.urlsService.filterByIdTag(parseInt(this.tagFiltred))
+    //this.urlsService.filterByIdTag(parseInt(this.tagFiltred))
   }
   clearFilter(){
-    this.tagFiltred = null
-    this.urlsService.clearFilter()
+    //this.tagFiltred = null
+    //this.urlsService.clearFilter()
   }
 
 }

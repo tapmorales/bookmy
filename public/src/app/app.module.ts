@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { AddUrlComponent } from './components/add-url/add-url.component';
 import { ListUrlsComponent } from './components/list-urls/list-urls.component';
 import { ListTagsComponent } from './components/list-tags/list-tags.component';
+import { HttpClientModule} from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { ListTagsComponent } from './components/list-tags/list-tags.component';
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

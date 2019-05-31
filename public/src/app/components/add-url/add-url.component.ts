@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { UrlsService } from '../../services/urls.service/urls.service'
+import { UrlsService, IUrl } from '../../services/urls.service/urls.service'
 
 @Component({
   selector: 'add-url',
@@ -11,13 +11,19 @@ export class AddUrlComponent implements OnInit {
   url: string = ''
   tags: string = ''
 
+  urls: IUrl[]
+
   constructor(public urlsService: UrlsService) { }  
   
   ngOnInit() {
-  }
+    
+  }  
 
   addUrl(){
     this.urlsService.addUrl(this.url, this.tags)
+      .subscribe( data => {
+        console.log(data)
+      })
     this.url=''
     this.tags = ''
   }

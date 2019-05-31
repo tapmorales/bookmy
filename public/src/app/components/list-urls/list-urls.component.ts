@@ -1,5 +1,5 @@
-import { TagsService } from '../../services/tags.service/tags.service';
-import { UrlsService } from '../../services/urls.service/urls.service';
+//import { TagsService } from '../../services/tags.service/tags.service';
+import { UrlsService, IUrl } from '../../services/urls.service/urls.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -9,13 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListUrlsComponent implements OnInit {
 
-  constructor(public urlsService: UrlsService, public tagsService: TagsService) { }
+  urls: IUrl[] = []
+
+  constructor(public urlsService: UrlsService) { }
 
   ngOnInit() {
+    this.getUrls()
   }
 
-  getTagsStr(tags: Array<number>): string{        
-    return this.tagsService.getTagsFromArrayByIds(tags)    
+  getUrls(){
+    this.urlsService.getUrls()
+      .subscribe( _urls => {
+        console.log(_urls)
+        this.urls = _urls
+      } )
+  }
+
+  getTagsStr(tags: Array<number>){        
+    //return this.tagsService.getTagsFromArrayByIds(tags)    
   }
 
 }

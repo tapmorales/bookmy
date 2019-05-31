@@ -1,6 +1,7 @@
 <form class="form-inline" (submit)="addUrl($event)" action="#">
+  <legend>Add new url</legend>
   <label class="sr-only" for="txturl">URL</label>
-  <input type="text" class="form-control mb-2 mr-sm-2" name="url" id="txturl" placeholder="URL" [(ngModel)]="url">
+  <input type="text" class="form-control mb-2 mr-sm-2 col-12" name="url" id="txturl" placeholder="URL" [(ngModel)]="url">
 
   <label class="sr-only" for="txttags">tags</label>
   <div class="input-group mb-2 mr-sm-2 flex-grow-1">
@@ -10,4 +11,5 @@
     <input type="text" class="form-control" id="txttags" name="tags" placeholder="tags separadas por vírgula" [(ngModel)]="tags">
   </div>
   <button type="submit" class="btn btn-primary mb-2">Cadastrar</button>
+  <hr>
 </form>
