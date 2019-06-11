@@ -5,9 +5,9 @@ exports.get = async (id) => {
     let data = null
 
     if(id){
-        data = await Tag.findById(id)
+        data = await Tag.findById(id).sort({qtd: -1, tag: 1})
     } else {
-        data = await Tag.find({})
+        data = await Tag.find({}).sort({qtd: -1, tag: 1})
     }
     return data;
 

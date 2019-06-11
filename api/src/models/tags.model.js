@@ -17,6 +17,6 @@ const schema = new Schema({
         required: true,
         trim: true
     }]
-})
+}, { versionKey: false })
 
 module.exports = mongoose.model('Tag', schema)

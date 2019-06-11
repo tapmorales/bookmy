@@ -1,22 +1,42 @@
+import { HttpClient } from '@angular/common/http';
 import { ITags } from './tags.service';
 import { Injectable } from '@angular/core';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
 
 export interface ITags{
-  urls: string[],
-  tag: string
+  qtd?: number;
+  urls: string[];
+  tag: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class TagsService {
+
+  private pathUrl = 'http://localhost:3000/api/tags'
+  tagsSubject$: BehaviorSubject<ITags[]> = new BehaviorSubject<ITags[]>(null)
+  private loaded = false
   
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   // private generateId(tag: string): number{
   //   const idTags = this.tags.map(tag => tag.id )
   //   return Math.max(...idTags) + 1
   // }
+
+  getTags(): Observable<ITags[]> {
+    console.log('getTags chamado')
+    if(!this.loaded){
+      this.http.get<ITags[]>(this.pathUrl)
+        .subscribe(this.tagsSubject$)
+        this.loaded = true
+    }
+    return this.tagsSubject$.asObservable()
+    //return this.http.get<ITags[]>(this.pathUrl)
+     
+  }
 
   addTag(tag: string){
     // const strTags = this.tags.map(tag => tag.name)    

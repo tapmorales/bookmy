@@ -1,4 +1,4 @@
-<h5 *ngIf="!tagFiltred" class="mb-3">Filtro por tag:</h5>
+<!-- <h5 *ngIf="!tagFiltred" class="mb-3">Filtro por tag:</h5>
 <div *ngIf="tagFiltred">
   <p class="mb-2"> Filtro: <b>{{tagsService.getTagById(tagFiltred)}}</b>. <button class="btn btn-outline-secondary btn-sm" (click)="clearFilter()">X</button></p></div>
 
@@ -6,4 +6,11 @@
   <li *ngFor="let t of tags" (click)="tagFiltred=t.id; filterTag($event, this)" data-id="tagId-{{t.id}}">
     {{t.name}}
   </li>
-</ul>
+</ul> -->
+<h5 class="mb-3">Tags:</h5>
+<ul>
+    <li *ngFor="let t of tags" class="d-flex justify-content-between align-items-center">
+      <span>{{t.tag}}</span>
+      <span class="badge badge-secondary">{{t.qtd}}</span>
+    </li>
+  </ul>

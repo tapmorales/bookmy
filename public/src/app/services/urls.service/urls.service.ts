@@ -34,7 +34,7 @@ export class UrlsService {
 
   constructor(private tagsService: TagsService, private http: HttpClient) { }
 
-  pathUrl = 'http://localhost:3000/api/urls'
+  private pathUrl = 'http://localhost:3000/api/urls'
 
   private urlsSubject$ = new BehaviorSubject<IUrl[]>(null)
   private loaded = false
@@ -43,7 +43,7 @@ export class UrlsService {
     // return this.http.get<IUrl[]>(this.pathUrl)
     if(!this.loaded){
       this.http.get<IUrl[]>(this.pathUrl)
-        .pipe( tap(urls => console.log), )
+        .pipe( tap(urls => console.log(urls)) )
         .subscribe(this.urlsSubject$)
         this.loaded = true
     } 
@@ -56,8 +56,15 @@ export class UrlsService {
     return this.http.post(this.pathUrl, {url, tags})
       .pipe(
         tap( (url: IUrl) => {
-          console.log(this.urlsSubject$.getValue())
-          console.log(url)
+          this.tagsService.getTags().subscribe( tags => {
+            console.log('60')
+            console.log(tags)
+          } )
+          this.tagsService.getTags().toPromise().then( tags => {
+            console.log('70')
+            console.log(tags)
+          } )
+          .catch(err => console.log({err}))
           this.urlsSubject$.getValue().splice(0, 0, {
             description: url.description+'',
             private: url.private,
@@ -69,7 +76,10 @@ export class UrlsService {
           
           }) 
         })
-      )      
+      ).subscribe( merda => {
+        console.log('merda')
+        console.log(merda)
+      })
   }
 
   public filterByIdTag(_tags: string){
@@ -81,31 +91,52 @@ export class UrlsService {
   }
 
   public del(url: IUrl): Observable<any>{
-    console.log('service del')
-    console.log(url)
     if(url && url._id)
-      return this.http.delete(this.pathUrl + '/' + url._id)
-                .pipe( tap( () => {
-                  let index = this.urlsSubject$.getValue().findIndex( u => u._id === url._id)
-                  if(index >= 0){
-                    this.urlsSubject$.getValue().splice(index, 1)
-                  }
-                  
-                } ))
+      return this.http
+                    .delete(this.pathUrl + '/' + url._id)
+                    .pipe( tap( () => {
+                      this.tagsService.getTags().subscribe( tags => {
+                        console.log('87')
+                        console.log(tags)
+                      } )
+                      let index = this.urlsSubject$.getValue().findIndex( u => u._id === url._id)
+                      if(index >= 0){
+                        this.urlsSubject$.getValue().splice(index, 1)
+                      }
+                      
+                    } ))
   }
 
   public update(url: IUrl): Observable<IUrl>{
-    return this.http.put<IUrl>(this.pathUrl + '/' + url._id, url)
-              .pipe( tap( (_url)  => {
-                console.log(_url) //na resposta do server não vem o _id
-                console.log(url)
-                let index = this.urlsSubject$.getValue().findIndex( u => u._id === url._id)
-                  if(index >= 0){
-                    this.urlsSubject$.getValue()[index] = url
-                  }
-              } ) )
+    return this.http
+                  .put<IUrl>(this.pathUrl + '/' + url._id, url)
+                  .pipe( tap( (_url)  => {
+                    console.log(_url) //na resposta do server não vem o _id                
+                    console.log(url)                 
+                    let index = this.urlsSubject$.getValue().findIndex( u => u._id === url._id)
+                    if(index >= 0){
+                      this.urlsSubject$.getValue()[index] = url
+                    }
+                    this.tagsService.getTags().subscribe( tags => tags)
+
+                    let tagsSubjectValue = this.tagsService.tagsSubject$.getValue()
+                    console.log('tagsSubjectValue')
+                    console.log(tagsSubjectValue)
+                    //tagsSubjectValue = tagsSubjectValue.filter( tag => tag.urls.indexOf(url._id) >= 0)               
+                    
+                    //.push({qtd: 1, tag: 'beluga', urls: ['oi']})                   
+                                        
+                  }))
+                  
 
   }
+
+
+
+
+
+
+  
 
   // public addUrl(url: string, tags: string): void{
   //   const strUrls = this.urlsOriginal.map(url => url.url  )

@@ -18,6 +18,15 @@ export class ListTagsComponent implements OnInit {
   }  
 
   ngOnInit() {
+    this.getTags()
+  }
+
+  getTags(){
+    this.tagsService.getTags()
+      .subscribe( _tags => {
+        console.warn('getTags do component')
+        this.tags = _tags
+      })
   }
 
   filterTag(){

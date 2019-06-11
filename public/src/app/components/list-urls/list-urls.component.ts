@@ -2,7 +2,7 @@
 
 //import { TagsService } from '../../services/tags.service/tags.service';
 import { UrlsService, IUrl } from '../../services/urls.service/urls.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -11,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './list-urls.component.html',
   styleUrls: ['./list-urls.component.css']
 })
-export class ListUrlsComponent implements OnInit {
+export class ListUrlsComponent implements OnInit, OnDestroy {
 
   urls: IUrl[] = []
   private unsubscribe$: Subject<any> = new Subject()
@@ -54,14 +54,15 @@ export class ListUrlsComponent implements OnInit {
     console.log(this.urlEditing)
     e.preventDefault()
     this.urlEditing.tags = this.urlEditing.tags.split(/[,\s]+/)
-    this.urlsService.update(this.urlEditing).subscribe( () => this.cancelEdit() )
+    this.urlsService.update(this.urlEditing)
+    .subscribe( () => this.cancelEdit() )
   }
 
   getTagsStr(tags: Array<number>){        
     //return this.tagsService.getTagsFromArrayByIds(tags)    
   }
 
-  onDestroy(){
+  ngOnDestroy(){
     this.unsubscribe$.next()
   }
 
