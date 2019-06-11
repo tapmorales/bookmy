@@ -1,0 +1,10 @@
+.card-text-tags{
+    cursor: pointer;
+}
+
+.card:nth-child(odd){
+    background: #f1eded;
+}
+.card:nth-child(even){
+    background: #f7f6f6;
+}

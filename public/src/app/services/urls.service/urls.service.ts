@@ -2,12 +2,14 @@ import { IUrl } from './urls.service';
 import { Injectable } from '@angular/core';
 import { TagsService } from '../tags.service/tags.service';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
+import {Observable, throwError, BehaviorSubject} from 'rxjs';
+import {tap} from 'rxjs/operators';
 
 
 
 export interface IUrl {
   readonly _id?: string;
+  readonly timestamp?: string;
   url: string;
   title: string;
   description: string;
@@ -34,14 +36,40 @@ export class UrlsService {
 
   pathUrl = 'http://localhost:3000/api/urls'
 
+  private urlsSubject$ = new BehaviorSubject<IUrl[]>(null)
+  private loaded = false
+
   public getUrls(): Observable<IUrl[]>{
-    return this.http.get<IUrl[]>(this.pathUrl)
+    // return this.http.get<IUrl[]>(this.pathUrl)
+    if(!this.loaded){
+      this.http.get<IUrl[]>(this.pathUrl)
+        .pipe( tap(urls => console.log), )
+        .subscribe(this.urlsSubject$)
+        this.loaded = true
+    } 
+    return this.urlsSubject$.asObservable()
   }
 
-  public addUrl(url: string, tags: string){
-    console.log('post', {url, tags})
+  public addUrl(url: string, _tags: string){
+    console.log('post', {url, _tags})
+    const tags = _tags.split(/[,\s]+/)
     return this.http.post(this.pathUrl, {url, tags})
-    
+      .pipe(
+        tap( (url: IUrl) => {
+          console.log(this.urlsSubject$.getValue())
+          console.log(url)
+          this.urlsSubject$.getValue().splice(0, 0, {
+            description: url.description+'',
+            private: url.private,
+            tags,
+            timestamp: url.timestamp,
+            title: url.title,
+            url: url.url,
+            _id: url._id
+          
+          }) 
+        })
+      )      
   }
 
   public filterByIdTag(_tags: string){
@@ -50,6 +78,31 @@ export class UrlsService {
 
   public clearFilter(){
     return this.getUrls()
+  }
+
+  public del(url: IUrl): Observable<any>{
+    console.log('service del')
+    console.log(url)
+    if(url && url._id)
+      return this.http.delete(this.pathUrl + '/' + url._id)
+                .pipe( tap( () => {
+                  let index = this.urlsSubject$.getValue().findIndex( u => u._id === url._id)
+                  if(index >= 0){
+                    this.urlsSubject$.getValue().splice(index, 1)
+                  }
+                  
+                } ))
+  }
+
+  public update(url: IUrl): Observable<any>{
+    return this.http.put(this.pathUrl + '/' + url._id, url)
+              .pipe( tap( ()  => {
+                let index = this.urlsSubject$.getValue().findIndex( u => u._id === url._id)
+                  if(index >= 0){
+                    this.urlsSubject$.getValue().splice(index, 1, url)
+                  }
+              } ) )
+
   }
 
   // public addUrl(url: string, tags: string): void{

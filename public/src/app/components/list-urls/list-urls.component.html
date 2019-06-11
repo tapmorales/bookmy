@@ -1,4 +1,29 @@
-<table class="table table-striped table-dark">
+<div class="card mb-0 border-0 rounded-0" *ngFor="let u of urls; let i = index">
+  <div class="card-body">
+    <h5 class="card-title"><a href="{{u.url}}">{{i}} - {{u.title}}</a></h5>
+    <h6 class="card-subtitle mb-2 text-muted">{{u.url}}</h6>
+    <p class="card-text">{{u.description}}</p>
+    <p class="card-text card-text-tags">
+      <span class="badge badge-info mr-2 p-2" *ngFor="let tag of u.tags">{{tag}}</span>
+    </p>
+    <p class="d-flex m-0 justify-content-end">
+      <a href="#" class="card-link" (click)="update(i, u, $event)">Editar</a>
+      <a href="#" class="card-link" (click)="del(u, $event)">Excluir</a>
+    </p>
+
+    <form *ngIf="editing === i" (submit)="save($event)">
+      <input type="text" name="url" [(ngModel)]="urlEditing.url"><br>
+      <input type="text" name="title" [(ngModel)]="urlEditing.title"><br>
+      <input type="text" name="description" [(ngModel)]="urlEditing.description"><br>
+      <input type="text" name="tags" [(ngModel)]="urlEditing.tags">
+      <button (click)="cancelEdit()">Cancelar</button>
+      <input type="submit" value="Salvar" >
+    </form>
+    
+  </div>
+</div>
+
+<!-- <table class="table table-striped table-dark">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -16,4 +41,4 @@
     </tr>
     
   </tbody>
-</table>
+</table> -->

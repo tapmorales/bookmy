@@ -25,7 +25,7 @@ const updateTags = async (urlId, _tags) => {
     return await tagsRepository.insertOrUpdate(tags)
 }
 
-const getTitleAndDescription =  (url) => {
+const getTitleAndDescription = (url) => {
     return axios.get(url)
         .then(function(response){
             

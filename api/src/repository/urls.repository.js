@@ -5,13 +5,14 @@ exports.get = async (_id)=>{
     
     let data = null
     if(_id){
-        data = await Url.findById(_id, 'url tags title description private')
+        data = await Url.findById(_id, 'url tags title description private').sort({timestamp: -1})
     }else {
-        data = await Url.find({}, 'url tags title description private')
+        data = await Url.find({}, 'url tags title description private').sort({timestamp: -1})
     }
 
     return data      
 }
+
 
 exports.post = async data=>{
     //const url = new Url(data)

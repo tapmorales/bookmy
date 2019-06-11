@@ -4,15 +4,18 @@
       <h1>Bookmy - Simple bookmarking</h1>
     </div>
 
-    <add-url></add-url>
-    <div class="row mt-5">
-      <div class="col-lg-9">
-        <list-urls></list-urls>
-      </div>
-      <div class="col-lg-3">
-        <list-tags></list-tags>
-      </div>
-    </div>  
+      <!-- <add-url (addNewUrl)="addNewUrl($event)"></add-url> -->
+      <add-url></add-url>
+
+      <div class="row mt-5">
+        <div class="col-lg-9">
+          <list-urls #listUrls></list-urls>
+        </div>
+        <div class="col-lg-3">
+          <list-tags #listTags></list-tags>
+        </div>
+      </div>  
+    
   
 </div>
 

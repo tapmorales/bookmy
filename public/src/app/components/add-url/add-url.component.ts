@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UrlsService, IUrl } from '../../services/urls.service/urls.service'
 
 @Component({
@@ -13,6 +13,9 @@ export class AddUrlComponent implements OnInit {
 
   urls: IUrl[]
 
+  //@Output()
+  //addNewUrl = new EventEmitter<IUrl>()
+
   constructor(public urlsService: UrlsService) { }  
   
   ngOnInit() {
@@ -22,10 +25,13 @@ export class AddUrlComponent implements OnInit {
   addUrl(){
     this.urlsService.addUrl(this.url, this.tags)
       .subscribe( data => {
-        console.log(data)
+        console.log('beluga')
+        this.url=''
+        this.tags = ''
+        //this.addNewUrl.emit(data as IUrl)
+
       })
-    this.url=''
-    this.tags = ''
+    
   }
 
 }
