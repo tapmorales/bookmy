@@ -117,14 +117,17 @@ export class UrlsService {
                     if(index >= 0){
                       this.urlsSubject$.getValue()[index] = url
                     }
-                    this.tagsService.getTags().subscribe( tags => tags)
-
-                    let tagsSubjectValue = this.tagsService.tagsSubject$.getValue()
-                    console.log('tagsSubjectValue')
-                    console.log(tagsSubjectValue)
-                    //tagsSubjectValue = tagsSubjectValue.filter( tag => tag.urls.indexOf(url._id) >= 0)               
-                    
-                    //.push({qtd: 1, tag: 'beluga', urls: ['oi']})                   
+                    this.tagsService.getTags().subscribe( tags => {
+                      //esse console NUNCA é executado, apesar de chamar getTags que está em tagsService
+                      console.log(tags)
+                      //aqui nao funciona
+                      let tagsSubjectValue = this.tagsService.tagsSubject$.getValue()
+                      //tagsSubjectValue = tags
+                      tagsSubjectValue.push({qtd: 1, tag: 'beluga', urls: ['oi']})
+                  })
+                  //aqui funciona
+                  let tagsSubjectValue = this.tagsService.tagsSubject$.getValue()
+                  tagsSubjectValue.push({qtd: 1, tag: 'petusco', urls: ['ola']})
                                         
                   }))
                   
