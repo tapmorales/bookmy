@@ -94,12 +94,14 @@ export class UrlsService {
                 } ))
   }
 
-  public update(url: IUrl): Observable<any>{
-    return this.http.put(this.pathUrl + '/' + url._id, url)
-              .pipe( tap( ()  => {
+  public update(url: IUrl): Observable<IUrl>{
+    return this.http.put<IUrl>(this.pathUrl + '/' + url._id, url)
+              .pipe( tap( (_url)  => {
+                console.log(_url) //na resposta do server não vem o _id
+                console.log(url)
                 let index = this.urlsSubject$.getValue().findIndex( u => u._id === url._id)
                   if(index >= 0){
-                    this.urlsSubject$.getValue().splice(index, 1, url)
+                    this.urlsSubject$.getValue()[index] = url
                   }
               } ) )
 
